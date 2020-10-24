@@ -5,6 +5,7 @@ import 'package:linhares/models/amigo.dart';
 
 class Amigos with ChangeNotifier {
   String _token;
+  // ignore: unused_field
   String _userId;
   Amigos(
     this._token,

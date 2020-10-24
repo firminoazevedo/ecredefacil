@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:linhares/animation/FadeAnimation.dart';
 import 'package:linhares/components/button.dart';
 import 'package:linhares/exceptions/firabese_exceptions.dart';
@@ -15,10 +17,50 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _auth = FirebaseAuth.instance;
   bool _isLoading = false;
   final TextEditingController _loginMsgController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  Future<void> _loginFirebase () async{
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      await _auth.signInWithEmailAndPassword(
+      email: _emailController.text, password: _passwordController.text);
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (context) => Home()));
+    } on PlatformException catch (err){
+      _showErrorDialog(err.code);
+    } catch (error){
+      print(error);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  void _loginComHttp() async {
+    Auth auth = Provider.of(context, listen: false);
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      await auth.login(_emailController.text, _passwordController.text);
+      auth.addUser({'email': _emailController.text});
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (context) => Home()));
+    } on AuthExceptionHttp catch (error) {
+      _showErrorDialog(error.toString());
+    } catch (error) {
+      _showErrorDialog('Ocorreu um erro inesperado');
+    }
+  }
+
+  
 
   void _showErrorDialog(String msg) {
     showDialog(
@@ -99,28 +141,10 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                                 Text(_loginMsgController.text),
-                                ButtonRounded('LOGIN', Colors.orange, () async {
-                                  Auth auth =
-                                      Provider.of(context, listen: false);
-                                  try {
-                                    setState(() {
-                                      _isLoading = true;
-                                    });
-                                    await auth.login(_emailController.text,
-                                        _passwordController.text);
-                                        auth.addUser({
-                                          'email': _emailController.text
-                                        });
-                                    Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                            builder: (context) => Home()));
-                                  } on AuthException catch (error) {
-                                    _showErrorDialog(error.toString());
-                                  } catch (error) {
-                                    _showErrorDialog(
-                                        'Ocorreu um erro inesperado');
-                                  }
-                                }),
+                                ButtonRounded(
+                                    'LOGIN', Colors.orange, () {
+                                      _loginFirebase();
+                                    }),
                                 ButtonRounded(
                                     'OU CRIAR ACESSO', Colors.deepOrange, () {
                                   Navigator.of(context).push(MaterialPageRoute(

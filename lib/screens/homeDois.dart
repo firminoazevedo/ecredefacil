@@ -32,7 +32,7 @@ class _HomeDoisPageState extends State<HomeDoisPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    email,
+                    'email',
                     style: GoogleFonts.openSans(
                         textStyle: TextStyle(
                             color: Colors.white,

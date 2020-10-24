@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "284529219889",
+    "firebase_url": "https://linhares-d11b1.firebaseio.com",
+    "project_id": "linhares-d11b1",
+    "storage_bucket": "linhares-d11b1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:284529219889:android:67138ef485d506f088b810",
+        "android_client_info": {
+          "package_name": "com.br.ecreditoefacil"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "284529219889-b3p07rdkfas9jjcnmcvp3bghb62p78dr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzhajygcKJN-lo4tjY9HbrHuazwQsvLU4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "284529219889-b3p07rdkfas9jjcnmcvp3bghb62p78dr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:284529219889:android:0245981740be6ef188b810",
+        "android_client_info": {
+          "package_name": "com.example.linhares"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "284529219889-b3p07rdkfas9jjcnmcvp3bghb62p78dr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzhajygcKJN-lo4tjY9HbrHuazwQsvLU4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "284529219889-b3p07rdkfas9jjcnmcvp3bghb62p78dr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:284529219889:android:8a8be474020f61a688b810",
+        "android_client_info": {
+          "package_name": "com.wendel.linhares"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "284529219889-b3p07rdkfas9jjcnmcvp3bghb62p78dr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzhajygcKJN-lo4tjY9HbrHuazwQsvLU4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "284529219889-b3p07rdkfas9jjcnmcvp3bghb62p78dr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

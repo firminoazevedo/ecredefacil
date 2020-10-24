@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:linhares/providers/amigos.dart';
 import 'package:linhares/providers/auth.dart';
 import 'package:linhares/providers/emprestimos.dart';
-import 'package:linhares/screens/startScreen.dart';
+import 'package:linhares/screens/login.dart';
 import 'package:provider/provider.dart';
 
 
 void main() {
+  //WidgetsFlutterBinding.ensureInitialized();
+  //await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -17,9 +19,13 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => new Auth()),
         ChangeNotifierProxyProvider<Auth, Emprestimos>(
-          create: (_) => Emprestimos(null, null, [],),
-          update: (ctx, auth, previousEmprestimo) =>
-              new Emprestimos(auth.token, auth.getUserId, previousEmprestimo.getEmprestimos),
+          create: (_) => Emprestimos(
+            null,
+            null,
+            [],
+          ),
+          update: (ctx, auth, previousEmprestimo) => new Emprestimos(
+              auth.token, auth.getUserId, previousEmprestimo.getEmprestimos),
         ),
         ChangeNotifierProxyProvider<Auth, Amigos>(
           create: (_) => Amigos(null, null, []),
@@ -34,7 +40,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: StartPage(),
+        home: LoginPage(),
       ),
     );
   }
