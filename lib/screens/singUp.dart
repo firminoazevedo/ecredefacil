@@ -5,9 +5,7 @@ import 'package:linhares/animation/FadeAnimation.dart';
 import 'package:linhares/components/button.dart';
 import 'package:linhares/exceptions/firabese_exceptions.dart';
 import 'package:linhares/providers/auth.dart';
-import 'package:linhares/screens/home.dart';
 import 'package:linhares/screens/login.dart';
-import 'package:linhares/screens/profile.dart';
 import 'package:linhares/screens/profileCreate.dart';
 import 'package:linhares/screens/startScreen.dart';
 import 'package:provider/provider.dart';
@@ -32,11 +30,10 @@ class _SingupPageState extends State<SingupPage> {
       setState(() {
         _isLoading = true;
       });
-      _authResult = await _auth.createUserWithEmailAndPassword(
-          email: _emailController.text, password: _passwordController.text);
-
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (context) => Home()));
+      /*_authResult = await _auth.createUserWithEmailAndPassword(
+          email: _emailController.text, password: _passwordController.text);*/
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => ProfileCreatePage('_authResult.user.uid')));
     } on PlatformException catch (err) {
       _showErrorDialog(err.code);
     } catch (error) {
@@ -144,8 +141,7 @@ class _SingupPageState extends State<SingupPage> {
                         ),
                         Text(_loginMsgController.text),
                         ButtonRounded('CRIAR ACESSO', Colors.orange, () {
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(builder: (context) => ProfileCreatePage()));
+                          _signUpFirebase();
                         }),
                         ButtonRounded('OU ENTRAR', Colors.deepOrange, () {
                           Navigator.of(context).push(MaterialPageRoute(

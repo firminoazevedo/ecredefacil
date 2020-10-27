@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:linhares/animation/FadeAnimation.dart';
@@ -26,7 +27,7 @@ class _ProfileCreatePageState extends State<ProfileCreatePage> {
     final pickedImage = await picker.getImage(
       source: ImageSource.camera,
       imageQuality: 50,
-      maxWidth: 150,
+      maxWidth: 720,
     );
     setState(() {
       _pickedImageFile = File(pickedImage.path);
@@ -57,6 +58,44 @@ class _ProfileCreatePageState extends State<ProfileCreatePage> {
     });
   }
 
+  void _submit() async {
+    final refProfilePic = FirebaseStorage.instance
+        .ref()
+        .child('users_profile_pic')
+        .child('Da4HvKT2k5eeJrFJ0pJMiMcXJKo1' + 'profile.jpg');
+    await refProfilePic.putFile(_pickedImageFile).onComplete;
+    final urlProfilePic = refProfilePic.getDownloadURL();
+
+    final refFrenteRG = FirebaseStorage.instance
+        .ref()
+        .child('users_frente_rg')
+        .child('Da4HvKT2k5eeJrFJ0pJMiMcXJKo1' + 'frenteRG.jpg');
+    await refFrenteRG.putFile(_frenteRGFileImage).onComplete;
+    final urlrefFrenteRG = refFrenteRG.getDownloadURL();
+
+    final refVersoRG = FirebaseStorage.instance
+        .ref()
+        .child('users_verso_rg')
+        .child('Da4HvKT2k5eeJrFJ0pJMiMcXJKo1' + 'versoRG.jpg');
+    await refVersoRG.putFile(_versoRGFileImage).onComplete;
+    final urlrefVersoRG = refVersoRG.getDownloadURL();
+
+    await Firestore.instance
+        .collection('users')
+        .document('lDa4HvKT2k5eeJrFJ0pJMiMcXJKo12')
+        .setData({
+          'nome': 'teste',
+          'telefone': 'teste',
+          'cpf': '60997811-12',
+          'rua': 'Rua edmilson Pereira',
+          'bairro': 'Centro',
+          'cidade': 'São domingos do maranhão',
+          'estado': 'MA',
+          'profissao': 'Programador',
+          'urlprofile': urlProfilePic,
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     Auth auth = Provider.of<Auth>(context);
@@ -71,20 +110,25 @@ class _ProfileCreatePageState extends State<ProfileCreatePage> {
                 SizedBox(
                   height: 25,
                 ),
-                CircleAvatar(
-                  backgroundImage: _pickedImageFile != null
-                      ? FileImage(_pickedImageFile)
-                      : null,
-                  radius: 40,
-                  backgroundColor: Colors.deepOrange,
-                  child: Icon(Icons.verified_user),
+                FlatButton(
+                  onPressed: _pickImage,
+                  child: CircleAvatar(
+                    backgroundImage: _pickedImageFile != null
+                        ? FileImage(_pickedImageFile)
+                        : null,
+                    radius: 40,
+                    backgroundColor: Colors.deepOrange,
+                    child: Icon(Icons.verified_user),
+                  ),
                 ),
                 FlatButton.icon(
                     onPressed: () {
                       _pickImage();
                     },
-                    icon: Icon(Icons.add_a_photo),
-                    label: Text('Adicionar foto')),
+                    icon: Icon(Icons.add_a_photo, color: Colors.grey[400],),
+                    label: Text('Adicionar foto', style: TextStyle(
+                      color: Colors.grey[400]
+                    ),)),
                 Text(
                   'firmino@hotmail.com',
                   style: TextStyle(
@@ -155,13 +199,16 @@ class _ProfileCreatePageState extends State<ProfileCreatePage> {
                           children: [
                             Column(
                               children: [
-                                CircleAvatar(
-                                  backgroundImage: _frenteRGFileImage != null
-                                      ? FileImage(_frenteRGFileImage)
-                                      : null,
-                                  radius: 40,
-                                  backgroundColor: Colors.deepOrange,
-                                  child: Icon(Icons.verified_user),
+                                FlatButton(
+                                  onPressed: _pickRGFrenteImage,
+                                  child: CircleAvatar(
+                                    backgroundImage: _frenteRGFileImage != null
+                                        ? FileImage(_frenteRGFileImage)
+                                        : null,
+                                    radius: 40,
+                                    backgroundColor: Colors.deepOrange,
+                                    child: Icon(Icons.verified_user),
+                                  ),
                                 ),
                                 FlatButton.icon(
                                     onPressed: () {
@@ -181,13 +228,16 @@ class _ProfileCreatePageState extends State<ProfileCreatePage> {
                             ),
                             Column(
                               children: [
-                                CircleAvatar(
-                                  backgroundImage: _versoRGFileImage != null
-                                      ? FileImage(_versoRGFileImage)
-                                      : null,
-                                  radius: 40,
-                                  backgroundColor: Colors.deepOrange,
-                                  child: Icon(Icons.verified_user),
+                                FlatButton(
+                                  onPressed: _pickRGVersoimage,
+                                  child: CircleAvatar(
+                                    backgroundImage: _versoRGFileImage != null
+                                        ? FileImage(_versoRGFileImage)
+                                        : null,
+                                    radius: 40,
+                                    backgroundColor: Colors.deepOrange,
+                                    child: Icon(Icons.verified_user),
+                                  ),
                                 ),
                                 FlatButton.icon(
                                     onPressed: () {
@@ -211,11 +261,7 @@ class _ProfileCreatePageState extends State<ProfileCreatePage> {
                           height: 10,
                         ),
                         ButtonRounded('SALVAR', Colors.deepOrange, () {
-                          Firestore.instance.collection('users').add({
-                            'nome': 'Firmino azevedo',
-                            'sobrenome': 'neto',
-                            'profissao': 'Empreendedor'
-                          });
+                          _submit();
                         }),
                         Container(
                           height: 8,
