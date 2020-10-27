@@ -1,4 +1,5 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:linhares/animation/FadeAnimation.dart';
 import 'package:linhares/components/button.dart';
@@ -8,6 +9,9 @@ import 'package:provider/provider.dart';
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+
+
     Auth auth = Provider.of<Auth>(context);
     return Scaffold(
       body: SingleChildScrollView(
@@ -27,7 +31,7 @@ class ProfilePage extends StatelessWidget {
                 ),
                 
                 Text(
-                  auth.email,
+                  'auth.email',
                   style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w200,
@@ -56,6 +60,7 @@ class ProfilePage extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         TextField(
+                          enabled: false,
                             decoration: InputDecoration(
                                 icon: Icon(Icons.person), hintText: 'Nome Completo')),
                         TextField(
@@ -92,7 +97,11 @@ class ProfilePage extends StatelessWidget {
                         
                         SizedBox(height: 20,),
                         ButtonRounded('SALVAR', Colors.deepOrange, () {
-                          
+                          Firestore.instance.collection('users').add({
+                            'nome': 'Firmino azevedo',
+                            'sobrenome': 'neto',
+                            'profissao': 'Empreendedor'
+                          });
                         }),
                         Container(
                           height: 8,

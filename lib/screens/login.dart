@@ -43,6 +43,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  // ignore: unused_element
   void _loginComHttp() async {
     Auth auth = Provider.of(context, listen: false);
     try {

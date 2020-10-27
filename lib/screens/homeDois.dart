@@ -15,6 +15,7 @@ class _HomeDoisPageState extends State<HomeDoisPage> {
   @override
   Widget build(BuildContext context) {
     Auth auth = Provider.of<Auth>(context);
+    // ignore: unused_local_variable
     String email = auth.email;
     final TextEditingController _valorDesejadoController = TextEditingController();
 

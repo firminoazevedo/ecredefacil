@@ -7,6 +7,8 @@ import 'package:linhares/exceptions/firabese_exceptions.dart';
 import 'package:linhares/providers/auth.dart';
 import 'package:linhares/screens/home.dart';
 import 'package:linhares/screens/login.dart';
+import 'package:linhares/screens/profile.dart';
+import 'package:linhares/screens/profileCreate.dart';
 import 'package:linhares/screens/startScreen.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +18,7 @@ class SingupPage extends StatefulWidget {
 }
 
 class _SingupPageState extends State<SingupPage> {
+  AuthResult _authResult;
   final _auth = FirebaseAuth.instance;
   bool _isLoading = false;
   final TextEditingController _loginMsgController = TextEditingController();
@@ -24,19 +27,19 @@ class _SingupPageState extends State<SingupPage> {
   final TextEditingController _repeatPasswordController =
       TextEditingController();
 
-  
-  Future<void> _loginFirebase () async{
+  Future<void> _signUpFirebase() async {
     try {
       setState(() {
         _isLoading = true;
       });
-      await _auth.createUserWithEmailAndPassword(
-      email: _emailController.text, password: _passwordController.text);
+      _authResult = await _auth.createUserWithEmailAndPassword(
+          email: _emailController.text, password: _passwordController.text);
+
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (context) => Home()));
-    } on PlatformException catch (err){
+    } on PlatformException catch (err) {
       _showErrorDialog(err.code);
-    } catch (error){
+    } catch (error) {
       print(error);
     } finally {
       setState(() {
@@ -45,7 +48,7 @@ class _SingupPageState extends State<SingupPage> {
     }
   }
 
-  void _singUpFirebase() async {
+  void _singUpHttp() async {
     Auth auth = Provider.of(context, listen: false);
     try {
       await auth.singup(_emailController.text, _passwordController.text);
@@ -140,10 +143,10 @@ class _SingupPageState extends State<SingupPage> {
                           ),
                         ),
                         Text(_loginMsgController.text),
-                        ButtonRounded(
-                            'CRIAR ACESSO', Colors.orange, (){
-                              _loginFirebase();
-                            }),
+                        ButtonRounded('CRIAR ACESSO', Colors.orange, () {
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(builder: (context) => ProfileCreatePage()));
+                        }),
                         ButtonRounded('OU ENTRAR', Colors.deepOrange, () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => LoginPage()));
