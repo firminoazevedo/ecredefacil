@@ -64,25 +64,25 @@ class _ProfileCreatePageState extends State<ProfileCreatePage> {
         .child('users_profile_pic')
         .child('Da4HvKT2k5eeJrFJ0pJMiMcXJKo1' + 'profile.jpg');
     await refProfilePic.putFile(_pickedImageFile).onComplete;
-    final urlProfilePic = refProfilePic.getDownloadURL();
+    final urlProfilePic = await refProfilePic.getDownloadURL();
 
     final refFrenteRG = FirebaseStorage.instance
         .ref()
         .child('users_frente_rg')
         .child('Da4HvKT2k5eeJrFJ0pJMiMcXJKo1' + 'frenteRG.jpg');
     await refFrenteRG.putFile(_frenteRGFileImage).onComplete;
-    final urlrefFrenteRG = refFrenteRG.getDownloadURL();
+    final urlrefFrenteRG = await refFrenteRG.getDownloadURL();
 
     final refVersoRG = FirebaseStorage.instance
         .ref()
         .child('users_verso_rg')
         .child('Da4HvKT2k5eeJrFJ0pJMiMcXJKo1' + 'versoRG.jpg');
     await refVersoRG.putFile(_versoRGFileImage).onComplete;
-    final urlrefVersoRG = refVersoRG.getDownloadURL();
+    final urlrefVersoRG = await refVersoRG.getDownloadURL();
 
     await Firestore.instance
         .collection('users')
-        .document('lDa4HvKT2k5eeJrFJ0pJMiMcXJKo12')
+        .document('Da4HvKT2k5eeJrFJ0pJMiMcXJKo1')
         .setData({
           'nome': 'teste',
           'telefone': 'teste',
@@ -93,6 +93,8 @@ class _ProfileCreatePageState extends State<ProfileCreatePage> {
           'estado': 'MA',
           'profissao': 'Programador',
           'urlprofile': urlProfilePic,
+          'urlRGFrente': urlrefFrenteRG,
+          'urlRGVerso': urlrefVersoRG,
         });
   }
 
