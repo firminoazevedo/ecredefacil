@@ -6,21 +6,26 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:linhares/animation/FadeAnimation.dart';
 import 'package:linhares/components/button.dart';
-import 'package:linhares/providers/auth.dart';
-import 'package:provider/provider.dart';
+import 'package:linhares/screens/profileStatusPage.dart';
 
 class ProfileCreatePage extends StatefulWidget {
   String _uid;
-  ProfileCreatePage([this._uid]);
+  String _email;
+  ProfileCreatePage([this._uid, this._email]);
 
   @override
-  _ProfileCreatePageState createState() => _ProfileCreatePageState();
+  _ProfileCreatePageState createState() {
+    print(_uid);
+    return _ProfileCreatePageState();
+  }
 }
 
 class _ProfileCreatePageState extends State<ProfileCreatePage> {
+  final _formKey = GlobalKey<FormState>();
   File _pickedImageFile;
   File _frenteRGFileImage;
   File _versoRGFileImage;
+  Map _formProfile = Map<String, Object>();
 
   Future<void> _pickImage() async {
     final picker = ImagePicker();
@@ -59,48 +64,43 @@ class _ProfileCreatePageState extends State<ProfileCreatePage> {
   }
 
   void _submit() async {
+    _formKey.currentState.save();
+    //print(_formProfile);
     final refProfilePic = FirebaseStorage.instance
         .ref()
         .child('users_profile_pic')
-        .child('Da4HvKT2k5eeJrFJ0pJMiMcXJKo1' + 'profile.jpg');
+        .child(widget._uid + 'profile.jpg');
     await refProfilePic.putFile(_pickedImageFile).onComplete;
     final urlProfilePic = await refProfilePic.getDownloadURL();
 
     final refFrenteRG = FirebaseStorage.instance
         .ref()
         .child('users_frente_rg')
-        .child('Da4HvKT2k5eeJrFJ0pJMiMcXJKo1' + 'frenteRG.jpg');
+        .child(widget._uid + 'frenteRG.jpg');
     await refFrenteRG.putFile(_frenteRGFileImage).onComplete;
     final urlrefFrenteRG = await refFrenteRG.getDownloadURL();
 
     final refVersoRG = FirebaseStorage.instance
         .ref()
         .child('users_verso_rg')
-        .child('Da4HvKT2k5eeJrFJ0pJMiMcXJKo1' + 'versoRG.jpg');
+        .child(widget._uid + 'versoRG.jpg');
     await refVersoRG.putFile(_versoRGFileImage).onComplete;
     final urlrefVersoRG = await refVersoRG.getDownloadURL();
 
+    _formProfile['urlprofile'] = urlProfilePic;
+    _formProfile['urlRGFrente'] = urlrefFrenteRG;
+    _formProfile['urlRGVerso'] = urlrefVersoRG;
+    _formProfile['status'] = 'em analise';
+
     await Firestore.instance
         .collection('users')
-        .document('Da4HvKT2k5eeJrFJ0pJMiMcXJKo1')
-        .setData({
-          'nome': 'teste',
-          'telefone': 'teste',
-          'cpf': '60997811-12',
-          'rua': 'Rua edmilson Pereira',
-          'bairro': 'Centro',
-          'cidade': 'São domingos do maranhão',
-          'estado': 'MA',
-          'profissao': 'Programador',
-          'urlprofile': urlProfilePic,
-          'urlRGFrente': urlrefFrenteRG,
-          'urlRGVerso': urlrefVersoRG,
-        });
+        .document(widget._uid)
+        .setData(_formProfile).then((_) => Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => ProfileStatusPage())));
   }
 
   @override
   Widget build(BuildContext context) {
-    Auth auth = Provider.of<Auth>(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -127,12 +127,16 @@ class _ProfileCreatePageState extends State<ProfileCreatePage> {
                     onPressed: () {
                       _pickImage();
                     },
-                    icon: Icon(Icons.add_a_photo, color: Colors.grey[400],),
-                    label: Text('Adicionar foto', style: TextStyle(
-                      color: Colors.grey[400]
-                    ),)),
+                    icon: Icon(
+                      Icons.add_a_photo,
+                      color: Colors.grey[400],
+                    ),
+                    label: Text(
+                      'Adicionar foto',
+                      style: TextStyle(color: Colors.grey[400]),
+                    )),
                 Text(
-                  'firmino@hotmail.com',
+                  widget._email,
                   style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w200,
@@ -158,117 +162,131 @@ class _ProfileCreatePageState extends State<ProfileCreatePage> {
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(50),
                             topRight: Radius.circular(50))),
-                    child: Column(
-                      children: <Widget>[
-                        TextField(
-                            decoration: InputDecoration(
-                                icon: Icon(Icons.person),
-                                hintText: 'Nome Completo')),
-                        TextField(
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                                icon: Icon(Icons.phone), hintText: 'Telefone')),
-                        TextField(
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                                icon: Icon(Icons.credit_card),
-                                hintText: 'CPF')),
-                        TextField(
-                            decoration: InputDecoration(
-                                icon: Icon(Icons.add_road_outlined),
-                                hintText: 'Rua')),
-                        TextField(
-                            decoration: InputDecoration(
-                                icon: Icon(Icons.location_on),
-                                hintText: 'Bairro')),
-                        TextField(
-                            decoration: InputDecoration(
-                                icon: Icon(Icons.location_city),
-                                hintText: 'Cidade')),
-                        TextField(
-                            decoration: InputDecoration(
-                                icon: Icon(Icons.location_city),
-                                hintText: 'Estado')),
-                        TextField(
-                            decoration: InputDecoration(
-                                icon: Icon(Icons.work), hintText: 'Profissão')),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Column(
-                              children: [
-                                FlatButton(
-                                  onPressed: _pickRGFrenteImage,
-                                  child: CircleAvatar(
-                                    backgroundImage: _frenteRGFileImage != null
-                                        ? FileImage(_frenteRGFileImage)
-                                        : null,
-                                    radius: 40,
-                                    backgroundColor: Colors.deepOrange,
-                                    child: Icon(Icons.verified_user),
-                                  ),
-                                ),
-                                FlatButton.icon(
-                                    onPressed: () {
-                                      _pickRGFrenteImage();
-                                    },
-                                    icon: Icon(
-                                      Icons.add_a_photo,
-                                      color: Colors.grey,
-                                      size: 15,
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: <Widget>[
+                          TextFormField(
+                              onSaved: (value) => _formProfile['nome'] = value,
+                              decoration: InputDecoration(
+                                  icon: Icon(Icons.person),
+                                  hintText: 'Nome Completo')),
+                          TextFormField(
+                            onSaved: (value) => _formProfile['numero'] = double.parse(value),
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                  icon: Icon(Icons.phone),
+                                  hintText: 'Telefone')),
+                          TextFormField(
+                            onSaved: (value) => _formProfile['cpf'] = value,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                  icon: Icon(Icons.credit_card),
+                                  hintText: 'CPF')),
+                          TextFormField(
+                            onSaved: (value) => _formProfile['rua'] = value,
+                              decoration: InputDecoration(
+                                  icon: Icon(Icons.add_road_outlined),
+                                  hintText: 'Rua')),
+                          TextFormField(
+                            onSaved: (value) => _formProfile['bairro'] = value,
+                              decoration: InputDecoration(
+                                  icon: Icon(Icons.location_on),
+                                  hintText: 'Bairro')),
+                          TextFormField(
+                            onSaved: (value) => _formProfile['cidade'] = value,
+                              decoration: InputDecoration(
+                                  icon: Icon(Icons.location_city),
+                                  hintText: 'Cidade')),
+                          TextFormField(
+                            onSaved: (value) => _formProfile['estado'] = value,
+                              decoration: InputDecoration(
+                                  icon: Icon(Icons.location_city),
+                                  hintText: 'Estado')),
+                          TextFormField(
+                            onSaved: (value) => _formProfile['profissao'] = value,
+                              decoration: InputDecoration(
+                                  icon: Icon(Icons.work),
+                                  hintText: 'Profissão')),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Column(
+                                children: [
+                                  FlatButton(
+                                    onPressed: _pickRGFrenteImage,
+                                    child: CircleAvatar(
+                                      backgroundImage:
+                                          _frenteRGFileImage != null
+                                              ? FileImage(_frenteRGFileImage)
+                                              : null,
+                                      radius: 40,
+                                      backgroundColor: Colors.deepOrange,
+                                      child: Icon(Icons.verified_user),
                                     ),
-                                    label: Text(
-                                      'Frente do RG',
-                                      style: TextStyle(
-                                          color: Colors.grey, fontSize: 10),
-                                    )),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                FlatButton(
-                                  onPressed: _pickRGVersoimage,
-                                  child: CircleAvatar(
-                                    backgroundImage: _versoRGFileImage != null
-                                        ? FileImage(_versoRGFileImage)
-                                        : null,
-                                    radius: 40,
-                                    backgroundColor: Colors.deepOrange,
-                                    child: Icon(Icons.verified_user),
                                   ),
-                                ),
-                                FlatButton.icon(
-                                    onPressed: () {
-                                      _pickRGVersoimage();
-                                    },
-                                    icon: Icon(
-                                      Icons.add_a_photo,
-                                      color: Colors.grey,
-                                      size: 15,
+                                  FlatButton.icon(
+                                      onPressed: () {
+                                        _pickRGFrenteImage();
+                                      },
+                                      icon: Icon(
+                                        Icons.add_a_photo,
+                                        color: Colors.grey,
+                                        size: 15,
+                                      ),
+                                      label: Text(
+                                        'Frente do RG',
+                                        style: TextStyle(
+                                            color: Colors.grey, fontSize: 10),
+                                      )),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  FlatButton(
+                                    onPressed: _pickRGVersoimage,
+                                    child: CircleAvatar(
+                                      backgroundImage: _versoRGFileImage != null
+                                          ? FileImage(_versoRGFileImage)
+                                          : null,
+                                      radius: 40,
+                                      backgroundColor: Colors.deepOrange,
+                                      child: Icon(Icons.verified_user),
                                     ),
-                                    label: Text(
-                                      'Verso do RG',
-                                      style: TextStyle(
-                                          color: Colors.grey, fontSize: 10),
-                                    )),
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        ButtonRounded('SALVAR', Colors.deepOrange, () {
-                          _submit();
-                        }),
-                        Container(
-                          height: 8,
-                        ),
-                      ],
+                                  ),
+                                  FlatButton.icon(
+                                      onPressed: () {
+                                        _pickRGVersoimage();
+                                      },
+                                      icon: Icon(
+                                        Icons.add_a_photo,
+                                        color: Colors.grey,
+                                        size: 15,
+                                      ),
+                                      label: Text(
+                                        'Verso do RG',
+                                        style: TextStyle(
+                                            color: Colors.grey, fontSize: 10),
+                                      )),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          ButtonRounded('SALVAR', Colors.deepOrange, () {
+                            _submit();
+                          }),
+                          Container(
+                            height: 8,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 )

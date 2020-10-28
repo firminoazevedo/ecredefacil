@@ -30,10 +30,10 @@ class _SingupPageState extends State<SingupPage> {
       setState(() {
         _isLoading = true;
       });
-      /*_authResult = await _auth.createUserWithEmailAndPassword(
-          email: _emailController.text, password: _passwordController.text);*/
+      _authResult = await _auth.signInWithEmailAndPassword(
+          email: _emailController.text, password: _passwordController.text);
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => ProfileCreatePage('_authResult.user.uid')));
+          MaterialPageRoute(builder: (context) => ProfileCreatePage(_authResult.user.uid, _emailController.text)));
     } on PlatformException catch (err) {
       _showErrorDialog(err.code);
     } catch (error) {

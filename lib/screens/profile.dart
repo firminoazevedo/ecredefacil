@@ -3,8 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:linhares/animation/FadeAnimation.dart';
 import 'package:linhares/components/button.dart';
-import 'package:linhares/providers/auth.dart';
-import 'package:provider/provider.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -12,7 +10,6 @@ class ProfilePage extends StatelessWidget {
 
 
 
-    Auth auth = Provider.of<Auth>(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
