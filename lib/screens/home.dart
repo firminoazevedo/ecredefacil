@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linhares/screens/amigos.dart';
+import 'package:linhares/screens/amigosFirebase.dart';
 import 'package:linhares/screens/emprestimosScreen.dart';
 import 'package:linhares/screens/homeDois.dart';
 import 'package:linhares/screens/profile.dart';
@@ -49,8 +50,8 @@ class HomeState extends State<Home> {
         controller: _pageController,
         children: [
           HomeDoisPage(),
-          EmprestimosPage(),
-          AmigosPage(),
+          //EmprestimosPage(),
+          AmigosFirebasePage(),
           ProfilePage()
         ],
       ),

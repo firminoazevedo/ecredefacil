@@ -8,6 +8,15 @@ class Auth with ChangeNotifier {
   String _email;
   String _token;
   DateTime _expiryDate;
+  String _uid;
+
+  String get getUid {
+    return _uid;
+  }
+
+  void setUid (String uid){
+    this._uid = uid;
+  }
 
   bool get isAuth {
     return token != null;

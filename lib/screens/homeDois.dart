@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linhares/components/gridDashBord.dart';
-import 'package:linhares/providers/auth.dart';
-import 'package:provider/provider.dart';
 
 class HomeDoisPage extends StatefulWidget {
   @override
@@ -14,9 +12,6 @@ class _HomeDoisPageState extends State<HomeDoisPage> {
 
   @override
   Widget build(BuildContext context) {
-    Auth auth = Provider.of<Auth>(context);
-    // ignore: unused_local_variable
-    String email = auth.email;
     final TextEditingController _valorDesejadoController = TextEditingController();
 
     return Column(

@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linhares/components/button.dart';
 import 'package:linhares/models/categoria.dart';
 import 'package:linhares/models/emprestimo.dart';
+import 'package:linhares/providers/auth.dart';
 import 'package:linhares/providers/emprestimos.dart';
 import 'package:linhares/screens/congratulations.dart';
 import 'package:provider/provider.dart';
@@ -25,9 +28,12 @@ class _EfetuarPageState extends State<EfetuarPage> {
 
   @override
   Widget build(BuildContext context) {
-
     // Alert dialog
     void _showConfirmationDialog() {
+
+      Auth auth = Provider.of<Auth>(context, listen: false);
+      print(auth.getUid);
+
       showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
@@ -41,17 +47,24 @@ class _EfetuarPageState extends State<EfetuarPage> {
                         setState(() {
                           _isLoading = true;
                         });
-                        await emprestimos
-                            .addEmprestimo(Emprestimo(
-                                tipo: _categoria.nome,
-                                valor: _valordesejado,
-                                cashbackValue:
-                                    (3000 * _categoria.cashback) / 100))
-                            .then((value) {
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) => CongratulationsPage()));
-                        });
+
+                        
+
+                        await Firestore.instance
+                            .collection('users')
+                            .document('OC8kUDK6ohRFYnDvlQNGFcGLBoj1').collection('emprestimos')
+                            .add(
+                              {
+                                'tipo': _categoria.nome,
+                                'valor': _valordesejado,
+                                'cashbackvalue': (_valordesejado * _categoria.cashback) / 100
+                              }
+                            ).then((_) => Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        CongratulationsPage())));
+                        
+                  
                       },
                       child: Text('Sim')),
                   FlatButton(

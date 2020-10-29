@@ -18,6 +18,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _auth = FirebaseAuth.instance;
+  AuthResult _authResult;
   bool _isLoading = false;
   final TextEditingController _loginMsgController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -28,8 +29,11 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         _isLoading = true;
       });
-      await _auth.signInWithEmailAndPassword(
+      _authResult = await _auth.signInWithEmailAndPassword(
       email: _emailController.text, password: _passwordController.text);
+
+      Provider.of<Auth>(context, listen: false).setUid(_authResult.user.uid);
+
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (context) => Home()));
     } on PlatformException catch (err){
