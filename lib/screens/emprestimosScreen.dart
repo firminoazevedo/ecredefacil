@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:linhares/models/emprestimo.dart';
 import 'package:linhares/providers/emprestimos.dart';
-import 'package:linhares/screens/emprestimoStatus.dart';
+import 'package:linhares/screens/info/emprestimoStatus.dart';
 import 'package:provider/provider.dart';
 
 class EmprestimosPage extends StatefulWidget {

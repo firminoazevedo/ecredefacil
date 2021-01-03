@@ -1,9 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:linhares/filter.dart';
 import 'package:linhares/models/amigo.dart';
 import 'package:linhares/providers/amigos.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class TestePage extends StatefulWidget {
   @override
@@ -11,23 +13,33 @@ class TestePage extends StatefulWidget {
 }
 
 class _TestePageState extends State<TestePage> {
+
+  Map emprestimos;
+
+  void getEmprestimos( ) async {
+    final response = await http.get('http://localhost:3000/emprestimos');
+    setState(() {
+      emprestimos = jsonDecode(response.body);
+    });
+    
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getEmprestimos();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     Amigos ami = Provider.of<Amigos>(context, listen: true);
+    // ignore: unused_local_variable
     List<Amigo> amigos = Provider.of<Amigos>(context, listen: true).getAmigos;
     TextEditingController _testControler = TextEditingController();
 
     //final Future<FirebaseApp> _init = Firebase.initializeApp();
-    return StreamBuilder(
-      stream: Firestore.instance.collection('users').snapshots(),
-      builder: (ctx, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        }
-
-        final documents = snapshot.data.documents;
-        print(documents[2]['bairro']);
-        return Scaffold(
+    return Scaffold(
             appBar: AppBar(
               actions: [
                 IconButton(
@@ -52,10 +64,10 @@ class _TestePageState extends State<TestePage> {
                 Expanded(
                     flex: 1,
                     child: ListView.builder(
-                        itemCount: amigos.length,
+                        itemCount: emprestimos['resultado'].length ?? 0,
                         itemBuilder: (ctx, i) => ListTile(
-                              title: Text(amigos[i].nome),
-                              subtitle: Text(amigos[i].valorPorIndicacao),
+                              title: Text(emprestimos['resultado'][i]['nome'] ?? 'Nenhum Emprestimo'),
+                              subtitle: Text(emprestimos['resultado'][i]['cashback'].toString() ?? ''),
                             ))),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -71,13 +83,15 @@ class _TestePageState extends State<TestePage> {
                     FlatButton(
                         onPressed: () {
                           //ami.remover();
+                          setState(() {
+                            getEmprestimos();
+                          });
+                          
                         },
                         child: Text('Testar')),
                   ],
                 )
               ],
             ));
-      },
-    );
   }
 }

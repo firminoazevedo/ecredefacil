@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linhares/components/button.dart';
@@ -7,7 +5,7 @@ import 'package:linhares/models/categoria.dart';
 import 'package:linhares/models/emprestimo.dart';
 import 'package:linhares/providers/auth.dart';
 import 'package:linhares/providers/emprestimos.dart';
-import 'package:linhares/screens/congratulations.dart';
+import 'package:linhares/screens/info/congratulations.dart';
 import 'package:provider/provider.dart';
 
 class EfetuarPage extends StatefulWidget {
@@ -30,9 +28,7 @@ class _EfetuarPageState extends State<EfetuarPage> {
   Widget build(BuildContext context) {
     // Alert dialog
     void _showConfirmationDialog() {
-
       Auth auth = Provider.of<Auth>(context, listen: false);
-      print(auth.getUid);
 
       showDialog(
           context: context,
@@ -42,29 +38,14 @@ class _EfetuarPageState extends State<EfetuarPage> {
                 actions: [
                   FlatButton(
                       onPressed: () async {
-                        Emprestimos emprestimos =
-                            Provider.of<Emprestimos>(context, listen: false);
                         setState(() {
                           _isLoading = true;
                         });
-
                         
-
-                        await Firestore.instance
-                            .collection('users')
-                            .document('OC8kUDK6ohRFYnDvlQNGFcGLBoj1').collection('emprestimos')
-                            .add(
-                              {
-                                'tipo': _categoria.nome,
-                                'valor': _valordesejado,
-                                'cashbackvalue': (_valordesejado * _categoria.cashback) / 100
-                              }
-                            ).then((_) => Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        CongratulationsPage())));
-                        
-                  
+                        final emprestimos = Provider.of<Emprestimos>(context, listen: false);
+                        emprestimos.addEmprestimo(Emprestimo(tipo: _categoria.nome, valor: _valordesejado, cashbackValue: _valordesejado * _categoria.cashback));
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => CongratulationsPage()));
                       },
                       child: Text('Sim')),
                   FlatButton(

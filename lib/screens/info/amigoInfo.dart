@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:linhares/models/emprestimo.dart';
+import 'package:linhares/models/amigo.dart';
 
-class EmprestimoStatus extends StatelessWidget {
-  final Emprestimo emprestimo;
-  EmprestimoStatus(this.emprestimo);
+class AmigoInfoPage extends StatelessWidget {
+  final Amigo amigo;
+  AmigoInfoPage(this.amigo);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,10 +15,9 @@ class EmprestimoStatus extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(emprestimo.tipo),
-          Text(emprestimo.valor.toString()),
-          Text(emprestimo.cashbackValue.toString()),
-          Text(emprestimo.status),
+          Text(amigo.nome ?? 'null'),
+          Text(amigo.valorPorIndicacao ?? 'null'),
+          Text(amigo.status ?? 'null'),
         ],
     ),
       ),

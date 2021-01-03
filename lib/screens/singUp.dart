@@ -18,6 +18,7 @@ class SingupPage extends StatefulWidget {
 class _SingupPageState extends State<SingupPage> {
   AuthResult _authResult;
   final _auth = FirebaseAuth.instance;
+  // ignore: unused_field
   bool _isLoading = false;
   final TextEditingController _loginMsgController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -30,7 +31,7 @@ class _SingupPageState extends State<SingupPage> {
       setState(() {
         _isLoading = true;
       });
-      _authResult = await _auth.signInWithEmailAndPassword(
+      _authResult = await _auth.createUserWithEmailAndPassword(
           email: _emailController.text, password: _passwordController.text);
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => ProfileCreatePage(_authResult.user.uid, _emailController.text)));
@@ -45,6 +46,7 @@ class _SingupPageState extends State<SingupPage> {
     }
   }
 
+  // ignore: unused_element
   void _singUpHttp() async {
     Auth auth = Provider.of(context, listen: false);
     try {

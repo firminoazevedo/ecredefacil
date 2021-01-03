@@ -8,6 +8,7 @@ import 'package:linhares/animation/FadeAnimation.dart';
 import 'package:linhares/components/button.dart';
 import 'package:linhares/screens/profileStatusPage.dart';
 
+// ignore: must_be_immutable
 class ProfileCreatePage extends StatefulWidget {
   String _uid;
   String _email;

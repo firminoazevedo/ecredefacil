@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linhares/screens/amigos.dart';
-import 'package:linhares/screens/amigosFirebase.dart';
 import 'package:linhares/screens/emprestimosScreen.dart';
 import 'package:linhares/screens/homeDois.dart';
+// ignore: unused_import
 import 'package:linhares/screens/profile.dart';
 import 'package:linhares/screens/startScreen.dart';
 
@@ -47,19 +47,22 @@ class HomeState extends State<Home> {
         backgroundColor: Colors.green[800],
       ),
       body: PageView(
+        pageSnapping: false,
         controller: _pageController,
         children: [
           HomeDoisPage(),
-          //EmprestimosPage(),
-          AmigosFirebasePage(),
-          ProfilePage()
+          EmprestimosPage(),
+          AmigosPage(),
+          ProfilePage(),
         ],
       ),
       drawer: Drawer(
         child: Container(
           child: Column(
             children: [
-              SizedBox(height: 30,),
+              SizedBox(
+                height: 30,
+              ),
               Divider(),
               Center(
                 child: InkWell(

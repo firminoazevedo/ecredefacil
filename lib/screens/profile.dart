@@ -1,16 +1,45 @@
+import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:linhares/animation/FadeAnimation.dart';
 import 'package:linhares/components/button.dart';
+import 'package:linhares/providers/auth.dart';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
-class ProfilePage extends StatelessWidget {
+
+class ProfilePage extends StatefulWidget {
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  final String _url = 'http://localhost:3000/usuarios/';
+  bool _isLoading = false;
+  Map mapUser = {};
+
+  Future<void> carregarPerfil () async {
+    Auth auth = Provider.of<Auth>(context, listen: false);
+    final resposta = await http.get(_url + auth.getUserId,);
+    mapUser = jsonDecode(resposta.body)['resultado'][0];
+    print(mapUser);
+    
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    carregarPerfil().then((value) => {
+      setState(() {
+    })
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-
-
-
-    return Scaffold(
+    Auth auth = Provider.of<Auth>(context, listen: false);
+    return _isLoading ? Center(
+      child: CircularProgressIndicator()) : Scaffold(
       body: SingleChildScrollView(
         child: Container(
           width: double.maxFinite,
@@ -21,21 +50,22 @@ class ProfilePage extends StatelessWidget {
                 SizedBox(
                   height: 25,
                 ),
-
                 CircleAvatar(
+                  radius: 60,
+                  backgroundImage: NetworkImage(mapUser['urlprofile'] ?? 'https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png'),
                   backgroundColor: Colors.deepOrange,
-                   child: Icon(Icons.verified_user),
+                  child: Icon(Icons.verified_user),
                 ),
-                
                 Text(
-                  'auth.email',
+                  auth.getEmail,
                   style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w200,
                       color: Colors.white),
                 ),
                 Text(
-                  'O seu cadastro irá para análise!\n digite os dados corretamente',
+                  'Matenha sempre seus dados atualizados\n Confira seu email',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w200,
@@ -57,48 +87,105 @@ class ProfilePage extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         TextField(
+                            enabled: false,
+                            decoration: InputDecoration(
+                                icon: Icon(Icons.person),
+                                hintText: mapUser['nome'])),
+                        TextField(
+                          enabled: false,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                                icon: Icon(Icons.phone),
+                                hintText: mapUser['telefone'].toString())),
+                        TextField(
+                          enabled: false,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                                icon: Icon(Icons.credit_card),
+                                hintText: mapUser['cpf'])),
+                        TextField(
                           enabled: false,
                             decoration: InputDecoration(
-                                icon: Icon(Icons.person), hintText: 'Nome Completo')),
+                                icon: Icon(Icons.add_road_outlined),
+                                hintText: mapUser['rua'].toString())),
                         TextField(
-                          keyboardType: TextInputType.number,
+                          enabled: false,
                             decoration: InputDecoration(
-                                icon: Icon(Icons.phone), hintText: 'Telefone')),
+                                icon: Icon(Icons.location_on),
+                                hintText: mapUser['bairro'].toString())),
                         TextField(
-                          keyboardType: TextInputType.number,
+                          enabled: false,
                             decoration: InputDecoration(
-                                icon: Icon(Icons.credit_card), hintText: 'CPF')),
+                                icon: Icon(Icons.location_city),
+                                hintText: mapUser['cidade'].toString())),
                         TextField(
-                          keyboardType: TextInputType.number,
+                          enabled: false,
                             decoration: InputDecoration(
-                                icon: Icon(Icons.credit_card), hintText: 'RG')),
+                                icon: Icon(Icons.location_city),
+                                hintText: mapUser['estado'].toString())),
                         TextField(
-                          keyboardType: TextInputType.number,
+                          enabled: false,
                             decoration: InputDecoration(
-                                icon: Icon(Icons.phone), hintText: 'CPF')),
-                        TextField(
-                            decoration: InputDecoration(
-                                icon: Icon(Icons.add_road_outlined), hintText: 'Rua')),
-                        TextField(
-                            decoration: InputDecoration(
-                                icon: Icon(Icons.location_on), hintText: 'Bairro')),
-                        TextField(
-                            decoration: InputDecoration(
-                                icon: Icon(Icons.location_city), hintText: 'Cidade')),
-                        TextField(
-                            decoration: InputDecoration(
-                                icon: Icon(Icons.location_city), hintText: 'Estado')),
-                        TextField(
-                            decoration: InputDecoration(
-                                icon: Icon(Icons.work), hintText: 'Profissão')),
+                                icon: Icon(Icons.work),
+                                hintText: mapUser['profissao'].toString())),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Column(
+                              children: [
+                                CircleAvatar(
+                                  backgroundImage:
+                                      NetworkImage(mapUser['urlRGFrente'] ?? 'https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png'),
+                                  radius: 40,
+                                  backgroundColor: Colors.deepOrange,
+                                  child: Icon(Icons.verified_user),
+                                ),
+                                FlatButton.icon(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.add_a_photo,
+                                      color: Colors.grey,
+                                      size: 15,
+                                    ),
+                                    label: Text(
+                                      'Frente do RG',
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 10),
+                                    )),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                CircleAvatar(
+                                  backgroundImage:
+                                      NetworkImage(mapUser['urlRGVerso'] ?? 'https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png'),
+                                  radius: 40,
+                                  backgroundColor: Colors.deepOrange,
+                                  child: Icon(Icons.verified_user),
+                                ),
+                                FlatButton.icon(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.add_a_photo,
+                                      color: Colors.grey,
+                                      size: 15,
+                                    ),
+                                    label: Text(
+                                      'Verso do RG',
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 10),
+                                    )),
+                              ],
+                            ),
+                          ],
+                        ),
                         
-                        SizedBox(height: 20,),
                         ButtonRounded('SALVAR', Colors.deepOrange, () {
-                          Firestore.instance.collection('users').add({
-                            'nome': 'Firmino azevedo',
-                            'sobrenome': 'neto',
-                            'profissao': 'Empreendedor'
-                          });
+                          carregarPerfil();
                         }),
                         Container(
                           height: 8,

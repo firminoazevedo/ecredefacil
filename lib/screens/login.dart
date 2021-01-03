@@ -24,21 +24,23 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  Future<void> _loginFirebase () async{
+  // ignore: unused_element
+  Future<void> _loginFirebase() async {
     try {
       setState(() {
         _isLoading = true;
       });
       _authResult = await _auth.signInWithEmailAndPassword(
-      email: _emailController.text, password: _passwordController.text);
+          email: _emailController.text, password: _passwordController.text);
 
       Provider.of<Auth>(context, listen: false).setUid(_authResult.user.uid);
+      Provider.of<Auth>(context, listen: false).setEmail(_emailController.text);
 
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (context) => Home()));
-    } on PlatformException catch (err){
+    } on PlatformException catch (err) {
       _showErrorDialog(err.code);
-    } catch (error){
+    } catch (error) {
       print(error);
     } finally {
       setState(() {
@@ -56,6 +58,7 @@ class _LoginPageState extends State<LoginPage> {
       });
       await auth.login(_emailController.text, _passwordController.text);
       auth.addUser({'email': _emailController.text});
+      auth.carregarDadosUsuario();
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (context) => Home()));
     } on AuthExceptionHttp catch (error) {
@@ -64,8 +67,6 @@ class _LoginPageState extends State<LoginPage> {
       _showErrorDialog('Ocorreu um erro inesperado');
     }
   }
-
-  
 
   void _showErrorDialog(String msg) {
     showDialog(
@@ -146,10 +147,12 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                                 Text(_loginMsgController.text),
-                                ButtonRounded(
-                                    'LOGIN', Colors.orange, () {
-                                      _loginFirebase();
-                                    }),
+                                ButtonRounded('LOGIN', Colors.orange, () {
+                                  _loginComHttp();
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                }),
                                 ButtonRounded(
                                     'OU CRIAR ACESSO', Colors.deepOrange, () {
                                   Navigator.of(context).push(MaterialPageRoute(

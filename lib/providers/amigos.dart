@@ -13,7 +13,7 @@ class Amigos with ChangeNotifier {
     this._amigos,
   );
 
-  final String _url = 'https://linhares-d11b1.firebaseio.com/amigos.json?auth=';
+  final String _url = 'http://localhost:3000/';
   List<Amigo> _amigos = [];
   List<Amigo> get getAmigos => [..._amigos];
 
@@ -34,14 +34,15 @@ class Amigos with ChangeNotifier {
 
   Future<void> loadAmigos() async {
     _amigos.clear();
-    final response = await http.get(_url + '$_token');
-    Map<String, dynamic> amigo = json.decode(response.body);
-    amigo.forEach((amigoId, amigo) {
+    final response = await http.get(_url + 'indicacoes/usuario/' +'1' );
+    Map<String, dynamic> amigosJson = json.decode(response.body);
+    List amigos = amigosJson['resultado'];
+    amigos.forEach((amigo) {
       print(amigo);
       _amigos.add(
         Amigo(
             nome: amigo['nome'],
-            valorPorIndicacao: amigo['valorporindicacao'],
+            valorPorIndicacao: amigo['valor_por_indicacao'],
             status: amigo['status']),
       );
     });

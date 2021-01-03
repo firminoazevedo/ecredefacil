@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linhares/components/gridDashBord.dart';
+import 'package:linhares/providers/auth.dart';
+import 'package:provider/provider.dart';
 
 class HomeDoisPage extends StatefulWidget {
   @override
@@ -12,6 +14,7 @@ class _HomeDoisPageState extends State<HomeDoisPage> {
 
   @override
   Widget build(BuildContext context) {
+    Auth auth = Provider.of<Auth>(context, listen: false);
     final TextEditingController _valorDesejadoController = TextEditingController();
 
     return Column(
@@ -28,7 +31,7 @@ class _HomeDoisPageState extends State<HomeDoisPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    'email',
+                    auth.getEmail,
                     style: GoogleFonts.openSans(
                         textStyle: TextStyle(
                             color: Colors.white,
@@ -51,7 +54,7 @@ class _HomeDoisPageState extends State<HomeDoisPage> {
               IconButton(
                 alignment: Alignment.topCenter,
                 icon: Icon(
-                  Icons.mail,
+                  Icons.exit_to_app_rounded,
                   color: Colors.white,
                 ),
                 onPressed: () {},
