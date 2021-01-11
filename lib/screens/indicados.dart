@@ -54,15 +54,15 @@ class _AmigosPageState extends State<AmigosPage> {
                             return Column(
                               children: <Widget>[
                                 ListTile(
-                                  leading: amigos[i].status == 'Aprovado'
-                                      ? CircleAvatar(
-                                          backgroundColor: Colors.white,
-                                          child: Icon(Icons.check))
-                                      : amigos[i].status == 'Reprovado'
-                                          ? Icon(
-                                              Icons.highlight_off,
-                                            )
-                                          : Icon(Icons.pending),
+                                  leading: amigos[i].status == 'Aprovado' 
+                              ? CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  child: Icon(Icons.check))
+                              : amigos[i].status == 'Reprovado'
+                                  ? Icon(
+                                      Icons.highlight_off,
+                                    )
+                                  : Icon(Icons.pending),
                                   title: Text(
                                     amigos[i].nome,
                                     style: TextStyle(color: Colors.white),

@@ -59,18 +59,12 @@ class Auth with ChangeNotifier {
         }));
     final responseBody = json.decode(response.body);
     print(responseBody);
-
-
-    if (responseBody["error"] != null) {
-      throw AuthExceptionHttp(responseBody['error']['message']);
+    if (responseBody["mensagem"] == 'Falha ao autenticar' ||
+    responseBody["mensagem"] == 'Falha na autenticacao') {
+      throw AuthExceptionHttp(responseBody['mensagem']);
     } else {
       _token = responseBody["token"];
       _idUsuario = responseBody["id_usuario"].toString();
-      /*_expiryDate = DateTime.now()
-          .add(Duration(seconds: int.parse(responseBody["expiresIn"])));
-      print(responseBody);*/
-
-      print(_idUsuario + 'jdjdjdj');
       notifyListeners();
     }
     return Future.value();
@@ -89,7 +83,6 @@ class Auth with ChangeNotifier {
     final response = await http.get(_url + 'usuarios/' + _idUsuario,
         headers: {"Authorization": "Bearer $_token"});
         print(_url + '/usuarios/' + _idUsuario);
-    List usuario = json.decode(response.body)['resultado'];
     print(json.decode(response.body));
     notifyListeners();
   }

@@ -28,6 +28,7 @@ class _EfetuarPageState extends State<EfetuarPage> {
   Widget build(BuildContext context) {
     // Alert dialog
     void _showConfirmationDialog() {
+      // ignore: unused_local_variable
       Auth auth = Provider.of<Auth>(context, listen: false);
 
       showDialog(

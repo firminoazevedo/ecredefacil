@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linhares/components/gridDashBord.dart';
 import 'package:linhares/providers/auth.dart';
+import 'package:linhares/screens/login.dart';
 import 'package:provider/provider.dart';
 
 class HomeDoisPage extends StatefulWidget {
@@ -57,7 +58,10 @@ class _HomeDoisPageState extends State<HomeDoisPage> {
                   Icons.exit_to_app_rounded,
                   color: Colors.white,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => LoginPage()));
+                },
               )
             ],
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:linhares/screens/amigos.dart';
+import 'package:linhares/components/rodape.dart';
+import 'package:linhares/screens/indicados.dart';
 import 'package:linhares/screens/emprestimosScreen.dart';
 import 'package:linhares/screens/homeDois.dart';
 // ignore: unused_import
@@ -13,7 +14,6 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
-  List<String> pages = ['Home', 'Empréstimos', 'Indicações', 'Minha conta'];
   String title = 'Home';
   PageController _pageController;
   int _indexPage = 0;
@@ -78,40 +78,9 @@ class HomeState extends State<Home> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Colors.green,
-          unselectedItemColor: Colors.grey,
-          fixedColor: Colors.green,
-          currentIndex: _indexPage,
-          onTap: (page) {
-            setState(() {
-              _indexPage = page;
-              title = pages[page];
-            });
-            _pageController.animateToPage(page,
-                duration: Duration(seconds: 1), curve: Curves.decelerate);
-          },
-          items: [
-            BottomNavigationBarItem(
-                // ignore: deprecated_member_use
-                icon: Icon(Icons.home),
-                // ignore: deprecated_member_use
-                title: Text('Home')),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.format_align_justify),
-                // ignore: deprecated_member_use
-                title: Text('Emprestimos')),
-            BottomNavigationBarItem(
-                // ignore: deprecated_member_use
-                icon: Icon(Icons.group),
-                // ignore: deprecated_member_use
-                title: Text('Indicados')),
-            BottomNavigationBarItem(
-                // ignore: deprecated_member_use
-                icon: Icon(Icons.person_outline),
-                // ignore: deprecated_member_use
-                title: Text('Minha Conta')),
-          ]),
+
+      // 
+      bottomNavigationBar: Rodape(_indexPage, _pageController),
     );
   }
 }
