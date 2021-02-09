@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:linhares/providers/amigos.dart';
 import 'package:linhares/providers/auth.dart';
 import 'package:linhares/providers/emprestimos.dart';
-import 'package:linhares/screens/login.dart';
+import 'package:linhares/screens/startScreen.dart';
 import 'package:provider/provider.dart';
 
 
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: LoginPage(),
+        home: StartPage(),
       ),
     );
   }

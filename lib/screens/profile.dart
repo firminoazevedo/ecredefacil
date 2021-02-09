@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:linhares/animation/FadeAnimation.dart';
 import 'package:linhares/components/button.dart';
 import 'package:linhares/providers/auth.dart';
+import 'package:linhares/utils/url.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -14,7 +15,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final String _url = 'http://localhost:3000/usuarios/';
+  final String _url = '${ApiURL.url}usuarios/';
   bool _isLoading = false;
   Map mapUser = {};
 

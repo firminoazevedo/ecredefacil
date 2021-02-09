@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:linhares/exceptions/firabese_exceptions.dart';
+import 'package:linhares/utils/url.dart';
 
 class Auth with ChangeNotifier {
   String _idUsuario;
@@ -47,7 +48,7 @@ class Auth with ChangeNotifier {
 
   Future<void> _authenticate(
       String email, String password, String segment) async {
-    final _url = "http://localhost:3000/usuarios/login";
+    final _url = "${ApiURL.url}usuarios/login";
 
     final response = await http.post(_url,
     headers: {
@@ -58,13 +59,17 @@ class Auth with ChangeNotifier {
           "senha": password,
         }));
     final responseBody = json.decode(response.body);
+    print(response.statusCode);
     print(responseBody);
-    if (responseBody["mensagem"] == 'Falha ao autenticar' ||
-    responseBody["mensagem"] == 'Falha na autenticacao') {
+    if (responseBody["mensagem"] == 'Falha ao autenticar'
+      || responseBody["mensagem"] == 'Falha na autenticacao'
+      || response.statusCode != 200
+      || responseBody["error"] != null) {
       throw AuthExceptionHttp(responseBody['mensagem']);
     } else {
       _token = responseBody["token"];
       _idUsuario = responseBody["id_usuario"].toString();
+      print('${responseBody["id_usuario"]}' + 'teste2');
       notifyListeners();
     }
     return Future.value();
@@ -79,10 +84,10 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> carregarDadosUsuario() async {
-    final String _url = 'http://localhost:3000/';
+    final String _url = ApiURL.url;
     final response = await http.get(_url + 'usuarios/' + _idUsuario,
         headers: {"Authorization": "Bearer $_token"});
-        print(_url + '/usuarios/' + _idUsuario);
+        print(_url + 'usuarios/' + _idUsuario + '/teste');
     print(json.decode(response.body));
     notifyListeners();
   }

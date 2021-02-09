@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:linhares/models/amigo.dart';
+import 'package:linhares/utils/url.dart';
 
 class Amigos with ChangeNotifier {
   String _token;
@@ -13,7 +14,7 @@ class Amigos with ChangeNotifier {
     this._amigos,
   );
 
-  final String _url = 'http://localhost:3000/';
+  final String _url = ApiURL.url;
   List<Amigo> _amigos = [];
   List<Amigo> get getAmigos => [..._amigos];
 

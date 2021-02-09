@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
       });
       await auth.login(_emailController.text, _passwordController.text);
       auth.addUser({'email': _emailController.text});
-      auth.carregarDadosUsuario();
+      await auth.carregarDadosUsuario();
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (context) => Home()));
     } on AuthExceptionHttp catch (error) {

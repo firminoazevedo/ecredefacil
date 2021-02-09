@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:linhares/models/emprestimo.dart';
+import 'package:linhares/utils/url.dart';
 
 class Emprestimos with ChangeNotifier {
-  final String _url = 'http://localhost:3000/';
+  final String _url = ApiURL.url;
   List<Emprestimo> _emprestimos = [];
   List<Emprestimo> get getEmprestimos => [..._emprestimos];
   String _token;
@@ -20,6 +21,7 @@ class Emprestimos with ChangeNotifier {
         .post(_url + 'emprestimos',
             headers: {"Authorization": "Bearer $_token", "Content-Type": "application/json"},
             body: json.encode({
+              "tipo_emprestimo": emprestimo.tipo,
               "id_usuario": _userId,
               "valor_emprestimo": emprestimo.valor,
               "cashback": emprestimo.cashbackValue,
@@ -38,13 +40,14 @@ class Emprestimos with ChangeNotifier {
     _emprestimos.clear();
     print(_userId);
     print(_token);
+    print(_url + 'emprestimos/usuario/' + _userId);
     final response = await http.get(_url + 'emprestimos/usuario/' + _userId,
         headers: {"Authorization": "Bearer $_token"});
     Map<String, dynamic> emprestimosUsuario = json.decode(response.body);
     List emprestimos = emprestimosUsuario['resultado'];
     emprestimos.forEach((emprestimo) => (_emprestimos.add(
           Emprestimo(
-              tipo: 'Margem innss',
+              tipo: emprestimo['tipo_emprestimo'] ?? 'null',
               valor: double.parse(emprestimo['valor_emprestimo'].toString()),
               cashbackValue: double.parse(emprestimo['cashback'].toString()),
               status: emprestimo['status']),
