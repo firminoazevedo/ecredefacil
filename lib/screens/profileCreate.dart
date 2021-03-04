@@ -167,43 +167,51 @@ class _ProfileCreatePageState extends State<ProfileCreatePage> {
                       key: _formKey,
                       child: Column(
                         children: <Widget>[
+                          //Nome
                           TextFormField(
                               onSaved: (value) => _formProfile['nome'] = value,
                               decoration: InputDecoration(
                                   icon: Icon(Icons.person),
                                   hintText: 'Nome Completo')),
+                          // Telefone
                           TextFormField(
                             onSaved: (value) => _formProfile['numero'] = double.parse(value),
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                   icon: Icon(Icons.phone),
                                   hintText: 'Telefone')),
+                          // CPF
                           TextFormField(
                             onSaved: (value) => _formProfile['cpf'] = value,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                   icon: Icon(Icons.credit_card),
                                   hintText: 'CPF')),
+                          // Rua
                           TextFormField(
                             onSaved: (value) => _formProfile['rua'] = value,
                               decoration: InputDecoration(
                                   icon: Icon(Icons.add_road_outlined),
                                   hintText: 'Rua')),
+                          // Bairro
                           TextFormField(
                             onSaved: (value) => _formProfile['bairro'] = value,
                               decoration: InputDecoration(
                                   icon: Icon(Icons.location_on),
                                   hintText: 'Bairro')),
+                          // Cidade
                           TextFormField(
                             onSaved: (value) => _formProfile['cidade'] = value,
                               decoration: InputDecoration(
                                   icon: Icon(Icons.location_city),
                                   hintText: 'Cidade')),
+                          // Estado
                           TextFormField(
                             onSaved: (value) => _formProfile['estado'] = value,
                               decoration: InputDecoration(
                                   icon: Icon(Icons.location_city),
                                   hintText: 'Estado')),
+                          // Profissão
                           TextFormField(
                             onSaved: (value) => _formProfile['profissao'] = value,
                               decoration: InputDecoration(

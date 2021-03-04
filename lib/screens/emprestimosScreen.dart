@@ -28,13 +28,11 @@ class _EmprestimosPageState extends State<EmprestimosPage> {
         _isLoading = false;
       });
     }));
-    emprestimos =
-        Provider.of<Emprestimos>(context, listen: false).getEmprestimos;
+    
   }
 
   @override
   Widget build(BuildContext context) {
-    print(emprestimos.length.toString());
     emprestimos =
         Provider.of<Emprestimos>(context, listen: true).getEmprestimos;
     return Column(

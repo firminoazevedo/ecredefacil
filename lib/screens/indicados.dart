@@ -25,17 +25,16 @@ class _AmigosPageState extends State<AmigosPage> {
         _isLoading = false;
       });
     }));
-    amigos = Provider.of<Amigos>(context, listen: false).getAmigos;
-    print(amigos);
   }
 
   @override
   Widget build(BuildContext context) {
-    print(amigos.length.toString());
     amigos = Provider.of<Amigos>(context, listen: true).getAmigos;
     return Column(
       children: [
-        Text('Lista de Amigos indicados'),
+        Text('Lista de Amigos indicados', style: TextStyle(
+          color: Colors.white
+        ),),
         Expanded(
           child: Container(
             child: RefreshIndicator(
