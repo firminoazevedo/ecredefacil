@@ -5,9 +5,9 @@ import 'package:linhares/animation/FadeAnimation.dart';
 import 'package:linhares/components/button.dart';
 import 'package:linhares/exceptions/firabese_exceptions.dart';
 import 'package:linhares/providers/auth.dart';
-import 'package:linhares/screens/login.dart';
-import 'package:linhares/screens/profileCreate.dart';
-import 'package:linhares/screens/startScreen.dart';
+import 'package:linhares/screens/login_page.dart';
+import 'package:linhares/screens/criar_perfil_page.dart';
+import 'package:linhares/screens/tela_de_inicio.dart';
 import 'package:provider/provider.dart';
 
 class SingupPage extends StatefulWidget {
@@ -143,7 +143,7 @@ class _SingupPageState extends State<SingupPage> {
                         ),
                         Text(_loginMsgController.text),
                         ButtonRounded('CRIAR ACESSO', Colors.orange, () {
-                          _signUpFirebase();
+                          _singUpHttp();
                         }),
                         ButtonRounded('OU ENTRAR', Colors.deepOrange, () {
                           Navigator.of(context).push(MaterialPageRoute(

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:linhares/components/button.dart';
-import 'package:linhares/screens/login.dart';
+import 'package:linhares/screens/login_page.dart';
 
 class ProfileStatusPage extends StatelessWidget {
   @override

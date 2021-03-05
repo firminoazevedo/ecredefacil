@@ -40,8 +40,8 @@ class Emprestimos with ChangeNotifier {
     _emprestimos.clear();
     print(_userId);
     print(_token);
-    print(_url + 'emprestimos/usuario/' + _userId);
-    final response = await http.get(_url + 'emprestimos/usuario/' + _userId,
+    print(_url + '/user/emprestimos/usuario/' + _userId);
+    final response = await http.get(_url + 'user/emprestimos/usuario/' + _userId,
         headers: {"Authorization": "Bearer $_token"});
     Map<String, dynamic> emprestimosUsuario = json.decode(response.body);
     List emprestimos = emprestimosUsuario['resultado'];

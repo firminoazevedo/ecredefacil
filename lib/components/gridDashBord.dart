@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:linhares/components/button.dart';
 import 'package:linhares/data/dummy_data.dart';
 import 'package:linhares/models/categoria.dart';
-import 'package:linhares/screens/efetuarEmprestimo.dart';
+import 'package:linhares/screens/efetuar_emprestimo_page.dart';
 
 class GridDashboard extends StatelessWidget {
   final TextEditingController _valorDesejado;
@@ -92,7 +92,6 @@ class GridDashboard extends StatelessWidget {
                             fontWeight: FontWeight.w600)),
                   ),
                   ButtonRounded('Solicitar', Colors.deepOrange[500], () {
-                    print(_valorDesejado);
                     if (_checkValorDesejado(_valorDesejado.text)) {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) =>

@@ -15,7 +15,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final String _url = '${ApiURL.url}usuarios/';
+  final String _url = '${ApiURL.url}user/usuarios/';
   bool _isLoading = false;
   Map mapUser = {};
 

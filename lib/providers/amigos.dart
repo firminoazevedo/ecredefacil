@@ -8,19 +8,14 @@ class Amigos with ChangeNotifier {
   String _token;
   // ignore: unused_field
   String _userId;
-  Amigos(
-    this._token,
-    this._userId,
-    this._amigos,
-  );
+  Amigos(this._token,this._userId,this._amigos,);
 
   final String _url = ApiURL.url;
   List<Amigo> _amigos = [];
   List<Amigo> get getAmigos => [..._amigos];
 
   Future<void> addAmigo(Amigo amigo) {
-    http
-        .post(_url + '$_token',
+    http.post(_url + '$_token',
             body: json.encode({
               "nome": amigo.nome,
               "valorporindicacao": amigo.valorPorIndicacao,
@@ -35,7 +30,7 @@ class Amigos with ChangeNotifier {
 
   Future<void> loadAmigos() async {
     _amigos.clear();
-    final response = await http.get(_url + 'indicacoes/usuario/' +'1' );
+    final response = await http.get(_url + 'user/indicacoes/usuario/' +'1' );
     Map<String, dynamic> amigosJson = json.decode(response.body);
     List amigos = amigosJson['resultado'];
     amigos.forEach((amigo) {

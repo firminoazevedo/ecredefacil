@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linhares/components/gridDashBord.dart';
 import 'package:linhares/providers/auth.dart';
-import 'package:linhares/screens/login.dart';
+import 'package:linhares/screens/login_page.dart';
 import 'package:provider/provider.dart';
 
 class HomeDoisPage extends StatefulWidget {

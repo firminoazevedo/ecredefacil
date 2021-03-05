@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linhares/components/rodape.dart';
-import 'package:linhares/screens/indicados.dart';
-import 'package:linhares/screens/emprestimosScreen.dart';
+import 'package:linhares/screens/indicados_page.dart';
+import 'package:linhares/screens/listar_emprestimos_page.dart';
 import 'package:linhares/screens/homeDois.dart';
 // ignore: unused_import
-import 'package:linhares/screens/profile.dart';
-import 'package:linhares/screens/startScreen.dart';
+import 'package:linhares/screens/perfil_page.dart';
+import 'package:linhares/screens/tela_de_inicio.dart';
 
 class Home extends StatefulWidget {
   @override

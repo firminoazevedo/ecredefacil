@@ -2,93 +2,69 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:linhares/exceptions/firabese_exceptions.dart';
+import 'package:linhares/repositories/user_repository.dart';
 import 'package:linhares/utils/url.dart';
 
 class Auth with ChangeNotifier {
   String _idUsuario;
   String _email;
   String _token;
-  // ignore: unused_field
-  DateTime _expiryDate;
   String _uid;
-
-  String get getUid {
-    return _uid;
-  }
-
-  void setUid(String uid) {
-    this._uid = uid;
-  }
-
-  bool get isAuth {
-    return token != null;
-  }
-
-  void addUser(Map user) {
-    _email = user['email'];
-  }
-
-  void setEmail(String email) {
-    _email = email;
-  }
-
-  // retornar email para o usuario
-  String get getEmail {
-    return _email;
-  }
-
-  String get getUserId {
-    return _idUsuario;
-  }
-
-  String get token {
-    return _token;
-  }
-
-
-  Future<void> _authenticate(
-      String email, String password, String segment) async {
-    final _url = "${ApiURL.url}usuarios/login";
-
-    final response = await http.post(_url,
-    headers: {
-      "Content-Type": "application/json"
-    },
-        body: json.encode({
-          "email": email,
-          "senha": password,
-        }));
-    final responseBody = json.decode(response.body);
-    print(response.statusCode);
-    print(responseBody);
-    if (responseBody["mensagem"] == 'Falha ao autenticar'
-      || responseBody["mensagem"] == 'Falha na autenticacao'
-      || response.statusCode != 200
-      || responseBody["error"] != null) {
-      throw AuthExceptionHttp(responseBody['mensagem']);
-    } else {
-      _token = responseBody["token"];
-      _idUsuario = responseBody["id_usuario"].toString();
-      print('${responseBody["id_usuario"]}' + 'teste2');
+  final UserRepository userRepository = UserRepository();
+  
+    String get getUid {
+      return _uid;
+    }
+  
+    void setUid(String uid) {
+      this._uid = uid;
+    }
+  
+    bool get isAuth {
+      return token != null;
+    }
+  
+    void addUser(Map user) {
+      _email = user['email'];
+    }
+  
+    void setEmail(String email) {
+      _email = email;
+    }
+  
+    String get getEmail {
+      return _email;
+    }
+  
+    String get getUserId {
+      return _idUsuario;
+    }
+  
+    String get token {
+      return _token;
+    }
+  
+  
+    Future<void> singup(String email, String password) async {
+      return Future.value();
+    }
+  
+    Future<void> login(String email, String password) async {
+      final responseBody = await userRepository.login(email, password);
+      if (responseBody["mensagem"] == 'Falha ao autenticar'
+        || responseBody["mensagem"] == 'Falha na autenticacao'
+        || responseBody["error"] != null) {
+        throw AuthExceptionHttp(responseBody['mensagem']);
+      } else {
+        _token = responseBody["token"];
+        _idUsuario = responseBody["id_usuario"].toString();
+      }
+    }
+  
+    Future<void> carregarDadosUsuario() async {
+      final String _url = ApiURL.url;
+      final response = await http.get(_url + 'user/usuarios/' + _idUsuario,
+          headers: {"Authorization": "Bearer $_token"});
       notifyListeners();
     }
-    return Future.value();
-  }
-
-  Future<void> singup(String email, String password) async {
-    return _authenticate(email, password, 'signUp');
-  }
-
-  Future<void> login(String email, String password) async {
-    return _authenticate(email, password, 'signInWithPassword');
-  }
-
-  Future<void> carregarDadosUsuario() async {
-    final String _url = ApiURL.url;
-    final response = await http.get(_url + 'usuarios/' + _idUsuario,
-        headers: {"Authorization": "Bearer $_token"});
-        print(_url + 'usuarios/' + _idUsuario + '/teste');
-    print(json.decode(response.body));
-    notifyListeners();
-  }
 }

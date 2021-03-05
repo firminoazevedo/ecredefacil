@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:linhares/animation/FadeAnimation.dart';
 import 'package:linhares/components/button.dart';
-import 'package:linhares/screens/profileStatusPage.dart';
+import 'package:linhares/screens/status_cadastro.dart';
 
 // ignore: must_be_immutable
 class ProfileCreatePage extends StatefulWidget {

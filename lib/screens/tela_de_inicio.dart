@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:linhares/animation/FadeAnimation.dart';
-import 'package:linhares/screens/login.dart';
-import 'package:linhares/screens/singUp.dart';
+import 'package:linhares/screens/login_page.dart';
+import 'package:linhares/screens/cadastrar_page.dart';
 
 class StartPage extends StatelessWidget {
   @override

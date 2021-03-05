@@ -5,8 +5,8 @@ import 'package:linhares/animation/FadeAnimation.dart';
 import 'package:linhares/components/button.dart';
 import 'package:linhares/exceptions/firabese_exceptions.dart';
 import 'package:linhares/providers/auth.dart';
-import 'package:linhares/screens/singUp.dart';
-import 'package:linhares/screens/startScreen.dart';
+import 'package:linhares/screens/cadastrar_page.dart';
+import 'package:linhares/screens/tela_de_inicio.dart';
 import 'package:provider/provider.dart';
 
 import 'home.dart';
@@ -160,10 +160,6 @@ class _LoginPageState extends State<LoginPage> {
                                 }),
                                 Container(
                                   height: 8,
-                                ),
-                                Text(
-                                  "Esqueceu sua senha?",
-                                  style: TextStyle(color: Colors.grey),
                                 ),
                                 SizedBox(
                                   height: 20,
